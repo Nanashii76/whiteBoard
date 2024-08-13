@@ -5,7 +5,7 @@ This is an application for **drawing** or making **annotations**. Here, you can 
 To edit, just clone this repository in your machine using:
 
 ``` bash
-git clone [<rep>](https://github.com/Nanashii76/whiteBoard)
+git clone https://github.com/Nanashii76/whiteBoard
 ```
 
 Feel free to use and edit.
