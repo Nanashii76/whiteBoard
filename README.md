@@ -1,13 +1,11 @@
 # White Board App
 
-----
-
 This is an application for **drawing** or making **annotations**. Here, you can map key bindings to add **personalized colors or brush sizes**. You can create your own board by editing and styling the code.
 
 To edit, just clone this repository in your machine using:
 
 ``` bash
-git clone <rep>
+git clone [<rep>](https://github.com/Nanashii76/whiteBoard)
 ```
 
 Feel free to use and edit.
