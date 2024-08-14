@@ -18,6 +18,7 @@ const Toolbar: React.FC<Props> = ({ setColor, setBrushSize, setTool, shortcuts, 
     const [newColorValue, setNewColorValue] = useState('#000000');
     const [newSizeKey, setNewSizeKey] = useState('');
     const [newSizeValue, setNewSizeValue] = useState<number>(5);
+    const [isMinimized, setIsMinimized] = useState(false);
 
     const handleAddColorShortcut = () => {
         if (newColorKey && newColorValue) {
@@ -37,7 +38,7 @@ const Toolbar: React.FC<Props> = ({ setColor, setBrushSize, setTool, shortcuts, 
                 sizeKeys: { ...shortcuts.sizeKeys, [newSizeKey]: newSizeValue }
             });
             setNewSizeKey('');
-            setNewSizeValue(5); 
+            setNewSizeValue(5);
         }
     };
 
@@ -47,81 +48,92 @@ const Toolbar: React.FC<Props> = ({ setColor, setBrushSize, setTool, shortcuts, 
             top: "10px", 
             left: "10px", 
             backgroundColor: "#f0f0f0", 
-            padding: "20px", 
+            padding: isMinimized ? "5px" : "20px", 
             borderRadius: "15px",
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
             zIndex: 1000,
             fontFamily: "'Comic Sans MS', cursive, sans-serif"
         }}>
-            <label htmlFor="colorPicker" style={{ marginRight: "10px" }}>Color: </label>
-            <input 
-                id="colorPicker"
-                type="color"
-                onChange={(e) => setColor(e.target.value)}
-                style={{ marginRight: "10px" }}
-            />
-            <label htmlFor="brushSize" style={{ marginRight: "10px" }}>Brush size: </label>
-            <input 
-                id="brushSize"
-                type="range"
-                min="1"
-                max="50"
-                defaultValue="5"
-                onChange={(e) => setBrushSize(parseInt(e.target.value, 10))}
-                style={{ marginRight: "10px" }}
-            />
-            <button onClick={() => setTool('brush')} style={buttonStyle}>Brush</button>
-            <button onClick={() => setTool('eraser')} style={buttonStyle}>Eraser</button>
-            
-            <h3>Set Color Shortcuts:</h3>
-            <input
-                type="text"
-                value={newColorKey}
-                onChange={(e) => setNewColorKey(e.target.value)}
-                placeholder="Key"
-                style={inputStyle}
-            />
-            <input
-                type="color"
-                value={newColorValue}
-                onChange={(e) => setNewColorValue(e.target.value)}
-                style={inputStyle}
-            />
-            <button onClick={handleAddColorShortcut} style={buttonStyle}>Add Color Shortcut</button>
+            <button 
+                onClick={() => setIsMinimized(!isMinimized)} 
+                style={minimizeButtonStyle}
+            >
+                {isMinimized ? "Expand" : "Minimize"}
+            </button>
 
-            <h3>Set Size Shortcuts:</h3>
-            <input
-                type="text"
-                value={newSizeKey}
-                onChange={(e) => setNewSizeKey(e.target.value)}
-                placeholder="Key"
-                style={inputStyle}
-            />
-            <input
-                type="number"
-                value={newSizeValue}
-                onChange={(e) => setNewSizeValue(parseInt(e.target.value, 10))}
-                min="1"
-                max="50"
-                style={inputStyle}
-            />
-            <button onClick={handleAddSizeShortcut} style={buttonStyle}>Add Size Shortcut</button>
-            
-            <div>
-                <h4>Current Shortcuts:</h4>
-                <h5>Color Shortcuts:</h5>
-                <ul>
-                    {Object.entries(shortcuts.colorKeys).map(([key, color]) => (
-                        <li key={key}>{key}: {color}</li>
-                    ))}
-                </ul>
-                <h5>Size Shortcuts:</h5>
-                <ul>
-                    {Object.entries(shortcuts.sizeKeys).map(([key, size]) => (
-                        <li key={key}>{key}: {size}</li>
-                    ))}
-                </ul>
-            </div>
+            {!isMinimized && (
+                <>
+                    <label htmlFor="colorPicker" style={{ marginRight: "10px" }}>Color: </label>
+                    <input 
+                        id="colorPicker"
+                        type="color"
+                        onChange={(e) => setColor(e.target.value)}
+                        style={{ marginRight: "10px" }}
+                    />
+                    <label htmlFor="brushSize" style={{ marginRight: "10px" }}>Brush size: </label>
+                    <input 
+                        id="brushSize"
+                        type="range"
+                        min="1"
+                        max="50"
+                        defaultValue="5"
+                        onChange={(e) => setBrushSize(parseInt(e.target.value, 10))}
+                        style={{ marginRight: "10px" }}
+                    />
+                    <button onClick={() => setTool('brush')} style={buttonStyle}>Brush</button>
+                    <button onClick={() => setTool('eraser')} style={buttonStyle}>Eraser</button>
+
+                    <h3>Set Color Shortcuts:</h3>
+                    <input
+                        type="text"
+                        value={newColorKey}
+                        onChange={(e) => setNewColorKey(e.target.value)}
+                        placeholder="Key"
+                        style={inputStyle}
+                    />
+                    <input
+                        type="color"
+                        value={newColorValue}
+                        onChange={(e) => setNewColorValue(e.target.value)}
+                        style={inputStyle}
+                    />
+                    <button onClick={handleAddColorShortcut} style={buttonStyle}>Add Color Shortcut</button>
+
+                    <h3>Set Size Shortcuts:</h3>
+                    <input
+                        type="text"
+                        value={newSizeKey}
+                        onChange={(e) => setNewSizeKey(e.target.value)}
+                        placeholder="Key"
+                        style={inputStyle}
+                    />
+                    <input
+                        type="number"
+                        value={newSizeValue}
+                        onChange={(e) => setNewSizeValue(parseInt(e.target.value, 10))}
+                        min="1"
+                        max="50"
+                        style={inputStyle}
+                    />
+                    <button onClick={handleAddSizeShortcut} style={buttonStyle}>Add Size Shortcut</button>
+                    
+                    <div>
+                        <h4>Current Shortcuts:</h4>
+                        <h5>Color Shortcuts:</h5>
+                        <ul>
+                            {Object.entries(shortcuts.colorKeys).map(([key, color]) => (
+                                <li key={key}>{key}: {color}</li>
+                            ))}
+                        </ul>
+                        <h5>Size Shortcuts:</h5>
+                        <ul>
+                            {Object.entries(shortcuts.sizeKeys).map(([key, size]) => (
+                                <li key={key}>{key}: {size}</li>
+                            ))}
+                        </ul>
+                    </div>
+                </>
+            )}
         </div>
     );
 };
@@ -136,6 +148,20 @@ const buttonStyle = {
     cursor: "pointer",
     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
     fontSize: "16px",
+    fontWeight: "bold",
+};
+
+const minimizeButtonStyle = {
+    backgroundColor: "#007bff",
+    border: "none",
+    borderRadius: "8px",
+    color: "#fff",
+    padding: "5px 5px",
+    marginBottom: "10px",
+    marginRight: "5px",
+    cursor: "pointer",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+    fontSize: "14px",
     fontWeight: "bold",
 };
 
